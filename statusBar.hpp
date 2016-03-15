@@ -34,11 +34,11 @@ class RscStatusBar
                         idc = 55554;
                         x = safezoneX + safezoneW - 1.90;
                         y = safezoneY + safezoneH - 0.063;
-                        w = 1.35;
+                        w = 1.38;
                         h = 0.06;
                         shadow = 2;
                         font = "OrbitronLight";
-                        size = 0.032;
+                        size = 0.030;
                         type = 13;
 						style = 2;
                         text = "";
