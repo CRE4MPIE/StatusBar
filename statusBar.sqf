@@ -37,7 +37,8 @@ disableSerialization;
 			_thirst = round (ExileClientPlayerAttributes select 3);
 			_bodytemp = round (ExileClientPlayerAttributes select 5);
 			_ambient = [ExileClientEnvironmentTemperature, 1] call ExileClient_util_math_round;
-			_wallet = ExileClientPlayerMoney;
+//			_wallet = ExileClientPlayerMoney;
+            _wallet = (player getVariable ["ExileMoney", 0]);
 			_respect = ExileClientPlayerScore;
 			_serverFPS = round diag_fps;
 			_pos = getPosATL player;
@@ -124,28 +125,44 @@ disableSerialization;
 				case((_thirst >= 10) && (_thirst < 20)) :  {_colourThirst =  _colour10;};
 				case((_thirst >= 1) && (_thirst < 10)) :  {_colourThirst =  _colour0;};
 				case(_thirst < 1) : {_colourThirst =  _colourDead;};
-			};
-			
-			
-						//Thirst
-			_colourCold = _colourDefault;
+			}
+		
+			//Body Temp
+			_colourBodyTemp = _colourDefault;
 			switch true do
 			{
-				case(_bodytemp >= 37) : {_colourCold = _colourDefault;};
-				case((_bodytemp >= 37) && (_bodytemp < 38)) :  {_colourCold =  _colour90;};
-				case((_bodytemp >= 36) && (_bodytemp < 37)) :  {_colourCold =  _colour80;};
-				case((_bodytemp >= 35) && (_bodytemp < 36)) :  {_colourCold =  _colour70;};
-				case((_bodytemp >= 34) && (_bodytemp < 35)) :  {_colourCold =  _colour60;};
-				case((_bodytemp >= 34) && (_bodytemp < 35)) :  {_colourCold =  _colour50;};
-				case((_bodytemp >= 33) && (_bodytemp < 34)) :  {_colourCold =  _colour40;};
-				case((_bodytemp >= 33) && (_bodytemp < 34)) :  {_colourCold =  _colour30;};
-				case((_bodytemp >= 32) && (_bodytemp < 33)) :  {_colourCold =  _colour20;};
-				case((_bodytemp >= 31) && (_bodytemp < 32)) :  {_colourCold =  _colour10;};
-				case((_bodytemp >= 1) && (_bodytemp < 10)) :  {_colourCold =  _colour0;};
-				case(_bodytemp < 1) : {_colourCold =  _colourDead;};
+				case(_bodytemp >= 37) : {_colourBodyTemp = _colourDefault;};
+				case((_bodytemp >= 37) && (_bodytemp < 38)) :  {_colourBodyTemp =  _colourDefault;};
+				case((_bodytemp >= 36) && (_bodytemp < 37)) :  {_colourBodyTemp =  _colour80;};
+				case((_bodytemp >= 35) && (_bodytemp < 36)) :  {_colourBodyTemp =  _colour70;};
+				case((_bodytemp >= 34) && (_bodytemp < 35)) :  {_colourBodyTemp =  _colour60;};
+				case((_bodytemp >= 34) && (_bodytemp < 35)) :  {_colourBodyTemp =  _colour50;};
+				case((_bodytemp >= 33) && (_bodytemp < 34)) :  {_colourBodyTemp =  _colour40;};
+				case((_bodytemp >= 33) && (_bodytemp < 34)) :  {_colourBodyTemp =  _colour30;};
+				case((_bodytemp >= 32) && (_bodytemp < 33)) :  {_colourBodyTemp =  _colour20;};
+				case((_bodytemp >= 31) && (_bodytemp < 32)) :  {_colourBodyTemp =  _colour10;};
+				case((_bodytemp >= 1) && (_bodytemp < 10)) :  {_colourBodyTemp =  _colour0;};
+				case(_bodytemp < 1) : {_colourBodyTemp =  _colourDead;};
+			}
+ 
+            //Ambient Temp
+			_colourAmbientTemp = _colourDefault; 
+            switch true do
+			{
+				case(_ambient >= 16) : {_colourAmbientTemp = _colourDefault;};
+				case((_ambient >= 14) && (_ambient < 16)) :  {_colourAmbientTemp =  _colourDefault;};
+				case((_ambient >= 12) && (_ambient < 14)) :  {_colourAmbientTemp =  _colour80;};
+				case((_ambient >= 10) && (_ambient < 12)) :  {_colourAmbientTemp =  _colour70;};
+				case((_ambient >= 8) && (_ambient < 10)) :  {_colourAmbientTemp =  _colour60;};
+				case((_ambient >= 6) && (_ambient < 8)) :  {_colourAmbientTemp =  _colour50;};
+				case((_ambient >= 4) && (_ambient < 6)) :  {_colourAmbientTemp =  _colour40;};
+				case((_ambient >= 2) && (_ambient < 4)) :  {_colourAmbientTemp =  _colour30;};
+				case((_ambient >= 0) && (_ambient < 2)) :  {_colourAmbientTemp =  _colour20;};
+				case((_ambient >= -2) && (_ambient < 0)) :  {_colourAmbientTemp =  _colour10;};
+				case((_ambient >= -4) && (_ambient < -2)) :  {_colourAmbientTemp =  _colour0;};
+				case(_ambient < -4) : {_colourAmbientTemp =  _colour0;};
 			};
-			
-			
+		
 			//display the information
 			((uiNamespace getVariable "RscStatusBar")displayCtrl 55554) ctrlSetStructuredText
 			parseText
@@ -156,33 +173,34 @@ disableSerialization;
 				<t shadow='1' shadowColor='#000000' color='%9'><img size='1.0'  shadowColor='#000000' image='addons\statusbar\icons\poptab_ca.paa' color='%9'/> %4</t>
 				<t shadow='1' shadowColor='#000000' color='%15'><img size='1.6'  shadowColor='#000000' image='addons\statusbar\icons\hunger.paa' color='%9'/> %5%1</t>
 				<t shadow='1' shadowColor='#000000' color='%16'><img size='1.6'  shadowColor='#000000' image='addons\statusbar\icons\thirst.paa' color='%9'/> %6%1</t>
-				<t shadow='1' shadowColor='#000000' color='%15'><img size='1.0'  shadowColor='#000000' image='addons\statusbar\icons\snowflake.paa' color='%9'/> %18%20</t>
-				<t shadow='1' shadowColor='#000000' color='%16'><img size='1.0'  shadowColor='#000000' image='addons\statusbar\icons\thermostat.paa' color='%9'/> %19%20</t>
+				<t shadow='1' shadowColor='#000000' color='%21'><img size='1.0'  shadowColor='#000000' image='addons\statusbar\icons\snowflake.paa' color='%9'/> %18%20</t>
+				<t shadow='1' shadowColor='#000000' color='%17'><img size='1.0'  shadowColor='#000000' image='addons\statusbar\icons\thermostat.paa' color='%9'/> %19%20</t>
 				<t shadow='1' shadowColor='#000000' color='%9'><img size='1.0'  shadowColor='#000000' image='addons\statusbar\icons\exile.paa' color='%9'/> %8</t>
 				<t shadow='1' shadowColor='#000000' color='%9'>FPS: %7</t>
 				<t shadow='1' shadowColor='#000000' color='%9'><img size='1.0'  shadowColor='#000000' image='addons\statusbar\icons\compass.paa' color='%9'/> %11</t>
 				<t shadow='1' shadowColor='#000000' color='%9'><img size='1.6'  shadowColor='#000000' image='addons\statusbar\icons\restart.paa' color='%9'/>%12:%13</t>",
 
-						"%",
-						count playableUnits,
-						_damage,
-						_wallet,
-						_hunger,
-						_thirst,
-						_serverFPS,
-						_respect,
-						_colourDefault,
-						format["%1/%2",_xx,_yy],
-						_dir,
-						_hours,
-						_minutes,
-						_colourDamage,
-						_colourHunger,
-						_colourThirst,
-						_colourCold,
-						_ambient,
-						_bodytemp,
-						"°C"
+						"%",                        //1
+						count playableUnits,        //2
+						_damage,                    //3
+						_wallet,                    //4
+						_hunger,                    //5
+						_thirst,                    //6
+						_serverFPS,                 //7
+						_respect,                   //8
+						_colourDefault,             //9
+						format["%1/%2",_xx,_yy],    //10
+						_dir,                       //11
+						_hours,                     //12
+						_minutes,                   //13
+						_colourDamage,              //14
+						_colourHunger,              //15
+						_colourThirst,              //1
+						_colourBodyTemp,            //17
+						_ambient,                   //18
+						_bodytemp,                  //19
+						"°C",                       //20
+						_colourAmbientTemp          //21
 			];
 	};
 };
